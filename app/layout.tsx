@@ -8,6 +8,7 @@ import NavBar from "@/components/Top/NavBar";
 import DomainContainer from "@/components/Middle/DomainContainer";
 import NotesContainer from "@/components/Middle/NotesContainer";
 import ChatContainer from "@/components/Middle/ChatContainer";
+import Workspace from "@/components/Middle/Workspace";
 
 const inter = Inter({ subsets: ["latin"] });
 

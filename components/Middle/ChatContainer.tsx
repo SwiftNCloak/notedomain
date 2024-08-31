@@ -49,7 +49,7 @@ export default function ChatContainer() {
   return (
     <div 
       ref={containerRef}
-      className="relative h-full box-border border-l border-[#2b2b2bd9] bg-[#e8e8e8] dark:bg-[#212121] flex flex-col"
+      className="relative h-full box-border border-l border-[#2b2b2bd9] bg-[#e8e8e8] dark:bg-[#212121] backdrop-flex flex-col"
       style={{ width: `${width}px` }}
     >
       <div className="flex-grow overflow-y-auto">
