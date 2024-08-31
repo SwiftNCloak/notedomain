@@ -7,3 +7,12 @@
     text-wrap: balance;
   }
 }
+
+.square-background {
+  background-image: 
+    linear-gradient(to right, #2b2b2b40 1px, transparent 1px),
+    linear-gradient(to bottom, #2b2b2b40 1px, transparent 1px);
+  background-size: 40px 40px;
+  width: 100%;
+  height: auto;
+}
