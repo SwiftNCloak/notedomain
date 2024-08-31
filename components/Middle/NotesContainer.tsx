@@ -49,21 +49,21 @@ export default function NotesContainer() {
   return (
     <div 
       ref={containerRef}
-      className="relative h-screen border-r border-[#2b2b2bd9] bg-[#e8e8e8] dark:bg-[#212121] flex flex-col space-y-2"
+      className="relative h-full box-border border-r border-[#2b2b2bd9] bg-[#e8e8e8] dark:bg-[#212121] flex flex-col"
       style={{ width: `${width}px` }}
     >
-      <div className="w-full h-screen overflow-y-auto border-b border-[#2b2b2bd9]">
+      <div className="flex-grow overflow-y-auto">
         {/* Content here */}
       </div>
 
-      <div className="w-full h-16 border-b border-[#2b2b2bd9]">
+      <div className="h-16 border-t border-[#2b2b2bd9]">
         {/* Footer content here */}
       </div>
 
       <div 
         ref={resizerRef}
         className="absolute top-0 right-0 w-[2px] h-full cursor-col-resize opacity-0 hover:opacity-100 transition-opacity"
-        // style={{ background: 'linear-gradient(to right, transparent, #2b2b2bd9, transparent)' }}
+        style={{ background: 'linear-gradient(to right, transparent, #2b2b2bd9, transparent)' }}
       />
     </div>
   );
