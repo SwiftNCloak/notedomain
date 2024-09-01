@@ -1,6 +1,8 @@
 'use client'
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+
+import Notebook from './Notebook';
 import Note from './Note';
 
 export default function NotesContainer() {
@@ -59,7 +61,7 @@ export default function NotesContainer() {
 
       <div className="flex-grow overflow-hidden flex flex-col">
         <div className="flex-grow overflow-y-auto scrollbar-hide p-2">
-          <Note />
+          <Notebook />
           <Note />
           <Note />
         </div>
@@ -72,7 +74,7 @@ export default function NotesContainer() {
       <div 
         ref={resizerRef}
         className="absolute top-0 right-0 w-[2px] h-full cursor-col-resize opacity-0 hover:opacity-100 transition-opacity"
-        style={{ background: 'linear-gradient(to right, transparent, #2b2b2bd9, transparent)' }}
+        style={{ background: 'linear-gradient(to right, transparent, #00D166d9, transparent)' }}
       />
     </div>
   );

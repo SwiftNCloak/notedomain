@@ -59,7 +59,7 @@ export default function ChatContainer() {
       <div 
         ref={resizerRef}
         className="absolute top-0 left-[-2px] w-[4px] h-full cursor-col-resize opacity-0 hover:opacity-100 transition-opacity"
-        style={{ background: 'linear-gradient(to left, transparent, #2b2b2bd9, transparent)' }}
+        style={{ background: 'linear-gradient(to left, transparent, #00D166d9, transparent)' }}
       />
     </div>
   );
