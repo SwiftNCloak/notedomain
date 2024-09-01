@@ -40,18 +40,20 @@ const UserLogin: React.FC = () => {
           return;
         }
 
+        const userData = {
+          clerk_user_id: user.id,
+          first_name: user.firstName ?? '',
+          last_name: user.lastName ?? '',
+          username: user.username ?? '',
+          email: userEmail,
+          password_hash: 'clerk_managed',
+        };
+
         if (!data) {
           // User doesn't exist in Supabase, so create them
           const { data: newUser, error: createError } = await supabase
             .from('users')
-            .insert({
-              clerk_user_id: user.id,
-              first_name: user.firstName ?? '',
-              last_name: user.lastName ?? '',
-              username: user.username ?? '',
-              email: userEmail,
-              password_hash: 'clerk_managed', // Since Clerk manages authentication
-            })
+            .insert(userData)
             .select()
             .single();
 
@@ -61,7 +63,19 @@ const UserLogin: React.FC = () => {
           }
           setSupabaseUser(newUser as SupabaseUser);
         } else {
-          setSupabaseUser(data as SupabaseUser);
+          // User exists, update their information
+          const { data: updatedUser, error: updateError } = await supabase
+            .from('users')
+            .update(userData)
+            .eq('clerk_user_id', user.id)
+            .select()
+            .single();
+
+          if (updateError) {
+            console.error('Error updating user in Supabase:', updateError);
+            return;
+          }
+          setSupabaseUser(updatedUser as SupabaseUser);
         }
       }
     }
@@ -82,7 +96,7 @@ const UserLogin: React.FC = () => {
       <SignedIn>
         <div className="w-full h-full flex space-x-3 text-sm items-center justify-start cursor-pointer">
           <UserButton />
-          <p className="font-semibold">{supabaseUser?.username || user?.username}</p>
+          <p className="font-semibold">{supabaseUser?.username}</p>
         </div>
       </SignedIn>
     </div>
