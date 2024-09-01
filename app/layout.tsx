@@ -4,7 +4,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NextTopLoader from 'nextjs-toploader';
 
-import NavBar from "@/components/Top/NavBar";
 import DomainContainer from "@/components/Middle/DomainContainer";
 import NotesContainer from "@/components/Middle/NotesContainer";
 import ChatContainer from "@/components/Middle/ChatContainer";
@@ -24,7 +23,6 @@ export default function RootLayout({
             <DomainContainer />
             <NotesContainer />
             <main className="flex-1 overflow-auto">
-              <NavBar />
               <NextTopLoader color="#00D166" showSpinner={false} />
               {children}
             </main>
