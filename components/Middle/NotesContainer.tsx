@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import Note from './Note';
 
 export default function NotesContainer() {
   const [width, setWidth] = useState<number>(240);
@@ -49,14 +50,22 @@ export default function NotesContainer() {
   return (
     <div 
       ref={containerRef}
-      className="relative h-full box-border border-r border-[#2b2b2bd9] bg-[#e8e8e8] dark:bg-[#212121] flex flex-col overflow-y-scroll scrollbar-hide"
+      className="relative h-full box-border border-r border-[#2b2b2bd9] bg-[#e8e8e8] dark:bg-[#212121] flex flex-col"
       style={{ width: `${width}px` }}
     >
-      <div className="flex-grow space-y-2 p-2 overflow-y-scroll scrollbar-hide">
-        
+      <div className="h-14 border-b border-[#2b2b2bd9] p-2 flex-shrink-0">
+        {/* Header content here */}
       </div>
 
-      <div className="h-16 border-t border-[#2b2b2bd9] p-2 bottom-0">
+      <div className="flex-grow overflow-hidden flex flex-col">
+        <div className="flex-grow overflow-y-auto scrollbar-hide p-2">
+          <Note />
+          <Note />
+          <Note />
+        </div>
+      </div>
+
+      <div className="h-16 border-t border-[#2b2b2bd9] p-2 flex-shrink-0">
         {/* Footer content here */}
       </div>
 
