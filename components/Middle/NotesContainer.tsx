@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 import Notebook from './Notebook';
 import Note from './Note';
+import UserLogin from '../Authentication/UserLogin';
 
 export default function NotesContainer() {
   const [width, setWidth] = useState<number>(240);
@@ -67,8 +68,8 @@ export default function NotesContainer() {
         </div>
       </div>
 
-      <div className="h-16 border-t border-[#2b2b2bd9] p-2 flex-shrink-0">
-        {/* Footer content here */}
+      <div className="h-13 border-t border-[#2b2b2bd9] p-2 flex-shrink-0 items-center justify-center flex flex-col">
+        <UserLogin />
       </div>
 
       <div 
