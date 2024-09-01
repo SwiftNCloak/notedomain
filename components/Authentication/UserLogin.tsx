@@ -96,7 +96,7 @@ const UserLogin: React.FC = () => {
       <SignedIn>
         <div className="w-full h-full flex space-x-3 text-sm items-center justify-start cursor-pointer">
           <UserButton />
-          <p className="font-semibold">{supabaseUser?.username}</p>
+          <p className="font-semibold">{user?.username}</p>
         </div>
       </SignedIn>
     </div>
