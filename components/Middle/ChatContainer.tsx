@@ -21,7 +21,7 @@ export default function ChatContainer() {
   const handleResize = useCallback((e: MouseEvent) => {
     if (containerRef.current) {
       const newWidth = containerRef.current.getBoundingClientRect().right - e.clientX;
-      if (newWidth > 280 && newWidth < 400) {
+      if (newWidth > 240 && newWidth < 400) {
         setWidth(newWidth);
       }
     }
