@@ -16,7 +16,7 @@ export default function DomainIcon({ name, iconUrl }: DomainIconProps) {
   };
 
   return (
-    <div className="w-12 h-12 flex items-center justify-center box-border bg-gray-200 rounded-2xl border border-[#2b2b2bd9] overflow-hidden">
+    <div className="w-12 h-12 flex items-center justify-center box-border bg-gray-200 rounded-2xl overflow-hidden">
       {!imageError ? (
         <img
           src={iconUrl}
