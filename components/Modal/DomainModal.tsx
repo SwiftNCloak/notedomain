@@ -69,31 +69,31 @@ export default function DomainModal({ isOpen, onClose, onSubmit }: DomainModalPr
               <Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-[#e8e8e8] dark:bg-[#212121] shadow-xl rounded-lg border border-[#2b2b2bd9]">
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100"
+                  className="text-lg font-bold leading-6 text-gray-900 dark:text-gray-100"
                 >
                   Create New Domain
                 </Dialog.Title>
 
-                <div className="mt-4">
+                <div className="mt-2">
                   <input
                     type="text"
                     placeholder="Domain Name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full p-2 mt-2 border border-[#2b2b2bd9] focus:border-[#00D166] outline-0 rounded-md bg-white dark:bg-[#333] text-gray-900 dark:text-gray-100"
+                    className="text-sm w-full p-2 mt-2 border border-[#2b2b2bd9] focus:border-[#00D166] outline-0 rounded-md bg-white dark:bg-[#333] text-gray-900 dark:text-gray-100"
                   />
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-2">
                   <input
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
-                    className="w-full p-2 border border-[#2b2b2bd9] focus:border-[#00D166] outline-0 rounded-md bg-white dark:bg-[#333] text-gray-900 dark:text-gray-100"
+                    className="text-sm w-full p-2 border border-[#2b2b2bd9] focus:border-[#00D166] outline-0 rounded-md bg-white dark:bg-[#333] text-gray-900 dark:text-gray-100"
                   />
                 </div>
 
-                <div className="mt-6 flex justify-end space-x-4">
+                <div className="mt-6 flex justify-end space-x-2">
                   <button
                     type="button"
                     onClick={onClose}
