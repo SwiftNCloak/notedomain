@@ -4,6 +4,24 @@ import supabase from "@/utils/supabase";
 import CreateDomain from "../Create/CreateDomain";
 import DomainIcon from "./DomainIcon";
 import JoinDomain from "../Join/JoinDomain";
+import dynamic from 'next/dynamic';
+
+import type { DropResult } from "react-beautiful-dnd";
+
+const DragDropContext = dynamic(
+  () => import('react-beautiful-dnd').then(mod => mod.DragDropContext),
+  { ssr: false }
+);
+
+const Droppable = dynamic(
+  () => import('react-beautiful-dnd').then(mod => mod.Droppable),
+  { ssr: false }
+);
+
+const Draggable = dynamic(
+  () => import('react-beautiful-dnd').then(mod => mod.Draggable),
+  { ssr: false }
+);
 
 interface Domain {
   id: string;
@@ -13,9 +31,11 @@ interface Domain {
 
 export default function DomainContainer() {
   const [domains, setDomains] = useState<Domain[]>([]);
+  const [isClient, setIsClient] = useState(false);
   const { user } = useUser();
 
   useEffect(() => {
+    setIsClient(true);
     if (user) {
       fetchUserDomains();
     }
@@ -46,21 +66,61 @@ export default function DomainContainer() {
   };
 
   const handleAddDomain = (name: string, iconUrl: string) => {
-    // This function will be called after successfully creating a new domain
     fetchUserDomains();
   };
 
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+
+    const reorderedDomains = Array.from(domains);
+    const [movedDomain] = reorderedDomains.splice(result.source.index, 1);
+    reorderedDomains.splice(result.destination.index, 0, movedDomain);
+
+    setDomains(reorderedDomains);
+  };
+
+  if (!isClient) {
+    return null; // or a loading spinner
+  }
+
   return (
-    <div className="w-[73px] max-w-[73px] border-box border-r border-[#2b2b2bd9] bg-[#e8e8e8] dark:bg-[#1f1f1f] 
-                    flex flex-col px-5 py-2 h-screen overflow-y-scroll scrollbar-hide">
-      <div className="flex flex-col items-center space-y-2">
-        {domains.map((domain) => (
-          <DomainIcon key={domain.id} name={domain.name} iconUrl={domain.icon_url} />
-        ))}
-        <hr className="border border-[#2b2b2bd9] w-full" />
-        <CreateDomain onAddDomain={handleAddDomain} />
-        <JoinDomain />
-      </div>
+    <div
+      className="w-[73px] max-w-[73px] border-box border-r border-[#2b2b2bd9] bg-[#e8e8e8] dark:bg-[#1f1f1f] 
+                 flex flex-col px-2 py-2 h-screen overflow-y-scroll overflow-x-hidden scrollbar-hide items-center space-y-2"
+    >
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="domains">
+          {(provided) => (
+            <div
+              className="flex flex-col items-center space-y-2"
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {domains.map((domain, index) => (
+                <Draggable key={domain.id} draggableId={domain.id} index={index}>
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <DomainIcon
+                        name={domain.name}
+                        iconUrl={domain.icon_url}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+        
+      <hr className="border border-[#2b2b2bd9] w-full" />
+      <CreateDomain onAddDomain={handleAddDomain} />
+      <JoinDomain />
     </div>
   );
 }
