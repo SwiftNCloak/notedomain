@@ -6,22 +6,7 @@ import DomainIcon from "./DomainIcon";
 import JoinDomain from "../Join/JoinDomain";
 import dynamic from 'next/dynamic';
 
-import type { DropResult } from "react-beautiful-dnd";
-
-const DragDropContext = dynamic(
-  () => import('react-beautiful-dnd').then(mod => mod.DragDropContext),
-  { ssr: false }
-);
-
-const Droppable = dynamic(
-  () => import('react-beautiful-dnd').then(mod => mod.Droppable),
-  { ssr: false }
-);
-
-const Draggable = dynamic(
-  () => import('react-beautiful-dnd').then(mod => mod.Draggable),
-  { ssr: false }
-);
+import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 
 interface Domain {
   id: string;
@@ -31,37 +16,34 @@ interface Domain {
 
 export default function DomainContainer() {
   const [domains, setDomains] = useState<Domain[]>([]);
-  const [isClient, setIsClient] = useState(false);
   const { user } = useUser();
 
   useEffect(() => {
-    setIsClient(true);
     if (user) {
       fetchUserDomains();
     }
   }, [user]);
 
   const fetchUserDomains = async () => {
-    const { data: userData, error: userError } = await supabase
-      .from("users")
-      .select("id")
-      .eq("clerk_user_id", user?.id)
-      .single();
+    try {
+      const { data: userData, error: userError } = await supabase
+        .from("users")
+        .select("id")
+        .eq("clerk_user_id", user?.id)
+        .single();
 
-    if (userError) {
-      console.error("Error fetching user:", userError);
-      return;
-    }
+      if (userError) throw userError;
 
-    const { data: domainsData, error: domainsError } = await supabase
-      .from("domains")
-      .select("*")
-      .eq("user_id", userData.id);
+      const { data: domainsData, error: domainsError } = await supabase
+        .from("domains")
+        .select("*")
+        .eq("user_id", userData.id);
 
-    if (domainsError) {
-      console.error("Error fetching domains:", domainsError);
-    } else {
+      if (domainsError) throw domainsError;
+
       setDomains(domainsData || []);
+    } catch (error) {
+      console.error("Error fetching domains:", error);
     }
   };
 
@@ -79,8 +61,8 @@ export default function DomainContainer() {
     setDomains(reorderedDomains);
   };
 
-  if (!isClient) {
-    return null; // or a loading spinner
+  if (typeof window === "undefined") {
+    return null; // Ensure SSR does not render anything
   }
 
   return (
@@ -92,32 +74,36 @@ export default function DomainContainer() {
         <Droppable droppableId="domains">
           {(provided) => (
             <div
-              className="flex flex-col items-center space-y-2"
+              className="flex flex-col items-center space-y-2 w-full"
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {domains.map((domain, index) => (
-                <Draggable key={domain.id} draggableId={domain.id} index={index}>
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    >
-                      <DomainIcon
-                        name={domain.name}
-                        iconUrl={domain.icon_url}
-                      />
-                    </div>
-                  )}
-                </Draggable>
-              ))}
+              {domains.length > 0 ? (
+                domains.map((domain, index) => (
+                  <Draggable key={domain.id} draggableId={domain.id} index={index}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <DomainIcon
+                          name={domain.name}
+                          iconUrl={domain.icon_url}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                ))
+              ) : (
+                <div className="h-10" /> // Placeholder div to ensure Droppable has content
+              )}
               {provided.placeholder}
             </div>
           )}
         </Droppable>
       </DragDropContext>
-        
+      
       <hr className="border border-[#2b2b2bd9] w-full" />
       <CreateDomain onAddDomain={handleAddDomain} />
       <JoinDomain />

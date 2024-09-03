@@ -94,9 +94,12 @@ const UserLogin: React.FC = () => {
         </SignInButton>
       </SignedOut>
       <SignedIn>
-        <div className="w-full h-full flex space-x-3 text-sm items-center justify-start cursor-pointer">
+        <div className="w-full h-full flex space-x-3 text-sm items-center justify-start cursor-pointer overflow-hidden box-border">
           <UserButton />
-          <p className="font-semibold">{user?.username}</p>
+          <div className='flex flex-col leading-none'>
+            <p className="font-semibold truncate ...">{user?.username}</p>
+            <p className="font-normal text-xs truncate ...">{user?.firstName} {user?.lastName}</p>
+          </div>
         </div>
       </SignedIn>
     </div>
