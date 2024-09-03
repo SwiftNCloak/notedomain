@@ -66,21 +66,21 @@ export default function DomainModal({ isOpen, onClose, onSubmit }: DomainModalPr
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+              <Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-[#e8e8e8] dark:bg-[#212121] shadow-xl rounded-lg border border-[#2b2b2bd9]">
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900"
+                  className="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100"
                 >
                   Create New Domain
                 </Dialog.Title>
 
-                <div className="mt-2">
+                <div className="mt-4">
                   <input
                     type="text"
                     placeholder="Domain Name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full p-2 mt-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 mt-2 border border-[#2b2b2bd9] focus:border-[#00D166] outline-0 rounded-md bg-white dark:bg-[#333] text-gray-900 dark:text-gray-100"
                   />
                 </div>
 
@@ -89,28 +89,25 @@ export default function DomainModal({ isOpen, onClose, onSubmit }: DomainModalPr
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
-                    className="w-full"
+                    className="w-full p-2 border border-[#2b2b2bd9] focus:border-[#00D166] outline-0 rounded-md bg-white dark:bg-[#333] text-gray-900 dark:text-gray-100"
                   />
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-6 flex justify-end space-x-4">
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-[#333] border border-gray-300 dark:border-[#555] rounded-md hover:bg-gray-100 dark:hover:bg-[#444] focus:outline-none"
+                  >
+                    Cancel
+                  </button>
                   <button
                     type="button"
                     disabled={isUploading}
                     onClick={handleSubmit}
-                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none"
+                    className="px-4 py-2 text-sm font-medium text-white bg-[#00D166] rounded-md hover:bg-[#00c060] focus:outline-none"
                   >
                     {isUploading ? "Uploading..." : "Create Domain"}
-                  </button>
-                </div>
-
-                <div className="mt-4">
-                  <button
-                    type="button"
-                    onClick={onClose}
-                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none"
-                  >
-                    Cancel
                   </button>
                 </div>
               </Dialog.Panel>
