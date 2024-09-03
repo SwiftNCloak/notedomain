@@ -100,7 +100,10 @@ export default function DomainContainer() {
                   </Draggable>
                 ))
               ) : (
-                <div className="h-10" /> // Placeholder div to ensure Droppable has content
+                <div className="space-y-2">
+                  <CreateDomain onAddDomain={handleAddDomain} />
+                  <JoinDomain />
+                </div>
               )}
               {provided.placeholder}
             </div>
@@ -108,9 +111,13 @@ export default function DomainContainer() {
         </Droppable>
       </DragDropContext>
       
-      <hr className="border-2 border-[#2b2b2bd9] rounded-2xl w-1/2" />
-      <CreateDomain onAddDomain={handleAddDomain} />
-      <JoinDomain />
+      {domains.length !== 0 && (
+        <>
+          <hr className="border-2 border-[#2b2b2bd9] rounded-2xl w-1/2" />
+          <CreateDomain onAddDomain={handleAddDomain} />
+          <JoinDomain />
+        </>
+      )}
     </div>
   );
 }
