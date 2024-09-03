@@ -1,6 +1,6 @@
 "use client"
 
-import { Cable } from "lucide-react";
+import { Cable, SquareArrowOutUpRight } from "lucide-react";
 
 export default function JoinDomain() {
   return (
