@@ -14,5 +14,15 @@ export async function uploadImage(file: File): Promise<string> {
     throw new Error("Image upload failed");
   }
 
-  return data.path;
+  // Get the public URL for the uploaded file
+  const { data: { publicUrl }, error: urlError } = supabase.storage
+    .from('notedomain-bucket')
+    .getPublicUrl(filePath);
+
+  if (urlError) {
+    console.error("Error getting public URL:", urlError);
+    throw new Error("Unable to get image URL");
+  }
+
+  return publicUrl;
 }

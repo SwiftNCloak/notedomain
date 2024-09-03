@@ -1,9 +1,11 @@
+// components/Create/CreateDomain.tsx
+
 import { useState } from "react";
-import { Plus } from "lucide-react";
-import DomainModal from "../Modal/DomainModal";
+import { useUser } from "@clerk/nextjs";
 import supabase from "@/utils/supabase";
 import { generateInviteCode } from "@/utils/inviteCode";
-import { useUser } from "@clerk/nextjs";
+import DomainModal from "../Modal/DomainModal";
+import { Plus } from "lucide-react";
 
 interface CreateDomainProps {
   onAddDomain: (name: string, iconUrl: string) => void;
@@ -22,10 +24,15 @@ export default function CreateDomain({ onAddDomain }: CreateDomainProps) {
   };
 
   const handleCreateDomain = async (name: string, iconUrl: string) => {
+    if (!user) {
+      console.error("No user logged in");
+      return;
+    }
+
     const { data: userData, error: userError } = await supabase
       .from("users")
       .select("id")
-      .eq("clerk_user_id", user?.id)
+      .eq("clerk_user_id", user.id)
       .single();
 
     if (userError) {
@@ -33,7 +40,6 @@ export default function CreateDomain({ onAddDomain }: CreateDomainProps) {
       return;
     }
 
-    const supabaseUserId = userData.id;
     const inviteCode = generateInviteCode();
 
     const { data, error } = await supabase
@@ -42,7 +48,7 @@ export default function CreateDomain({ onAddDomain }: CreateDomainProps) {
         {
           name,
           icon_url: iconUrl,
-          user_id: supabaseUserId,
+          user_id: userData.id,
           invite_code: inviteCode,
         },
       ]);
@@ -51,7 +57,7 @@ export default function CreateDomain({ onAddDomain }: CreateDomainProps) {
       console.error("Error creating domain:", error);
     } else {
       console.log("Domain Created:", data);
-      onAddDomain(name, iconUrl); // Notify parent component
+      onAddDomain(name, iconUrl);
       setIsModalOpen(false);
     }
   };
@@ -60,9 +66,9 @@ export default function CreateDomain({ onAddDomain }: CreateDomainProps) {
     <>
       <div
         onClick={handleOpenModal}
-        className="flex items-center justify-center p-2 w-12 max-w-12 box-border h-12 max-h-12 border border-[#2b2b2bd9] bg-[#00D166] rounded-2xl cursor-pointer"
+        className="flex items-center justify-center p-2 w-12 max-w-12 box-border h-12 max-h-12 border border-[#2b2b2bd9] bg-[#e8e8e829] dark:bg-[#2b2b2bd9] text-[#00D166] hover:bg-[#00D166] hover:text-[#e8e8e8] rounded-2xl cursor-pointer"
       >
-        <Plus size={25} className="text-[#f1f1f1]" />
+        <Plus size={25} />
       </div>
 
       <DomainModal
