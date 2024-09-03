@@ -16,7 +16,7 @@ export default function DomainIcon({ name, iconUrl }: DomainIconProps) {
   };
 
   return (
-    <div className="w-12 h-12 flex items-center justify-center box-border bg-gray-200 rounded-2xl overflow-hidden border border-[#2b2b2bd9]">
+    <div className="w-12 h-12 flex items-center justify-center box-border bg-gray-200 rounded-2xl overflow-hidden border border-[#2b2b2bd9] cursor-pointer">
       {!imageError ? (
         <img
           src={iconUrl}
@@ -25,7 +25,7 @@ export default function DomainIcon({ name, iconUrl }: DomainIconProps) {
           onError={handleImageError}
         />
       ) : (
-        <div className="w-12 h-12 flex items-center justify-center bg-gray-300 text-gray-600 font-bold text-lg">
+        <div className="w-12 h-12 flex items-center justify-center bg-gray-300 text-gray-600 font-bold text-lg cursor-pointer">
           {name.charAt(0).toUpperCase()}
         </div>
       )}

@@ -7,6 +7,7 @@ import JoinDomain from "../Join/JoinDomain";
 import dynamic from 'next/dynamic';
 
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
+import NoteDomainLogo from "./NoteDomainLogo";
 
 interface Domain {
   id: string;
@@ -67,9 +68,12 @@ export default function DomainContainer() {
 
   return (
     <div
-      className="w-[73px] max-w-[73px] border-box border-r border-[#2b2b2bd9] bg-[#e8e8e8] dark:bg-[#1f1f1f] 
+      className="w-[70px] max-w-[70px] border-box border-r border-[#2b2b2bd9] bg-[#e8e8e8] dark:bg-[#1f1f1f] 
                  flex flex-col px-2 py-2 h-screen overflow-y-scroll overflow-x-hidden scrollbar-hide items-center space-y-2"
     >
+      <NoteDomainLogo />
+      <hr className="border-2 border-[#2b2b2bd9] rounded-2xl w-1/2" />
+      
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="domains">
           {(provided) => (
@@ -104,7 +108,7 @@ export default function DomainContainer() {
         </Droppable>
       </DragDropContext>
       
-      <hr className="border border-[#2b2b2bd9] w-full" />
+      <hr className="border-2 border-[#2b2b2bd9] rounded-2xl w-1/2" />
       <CreateDomain onAddDomain={handleAddDomain} />
       <JoinDomain />
     </div>
