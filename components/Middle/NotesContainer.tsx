@@ -72,7 +72,7 @@ const NotesContainer: React.FC<NotesContainerProps> = ({ selectedDomain }) => {
         <div className='items-start justify-start flex flex-col truncate'>
           <h1 className='font-semibold text-sm'>{selectedDomain ? selectedDomain.name : '[Domain Name]'}</h1>
           <p className='font-semibold text-xs text-[#c8c8c8d9]'>
-            {selectedDomain ? `Created by ${selectedDomain.created_by}` : '[Created by]'}
+            {selectedDomain ? `${selectedDomain.created_by}` : '[Created by]'}
           </p>
         </div>
 

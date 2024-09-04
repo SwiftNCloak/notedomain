@@ -46,7 +46,7 @@ const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect }) => 
           id,
           name,
           icon_url,
-          users (id, username)
+          users (id, username, first_name, last_name)
         `)
         .eq("user_id", userData.id);
 
@@ -56,7 +56,7 @@ const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect }) => 
         id: domain.id,
         name: domain.name,
         icon_url: domain.icon_url,
-        created_by: domain.users.username
+        created_by: `${domain.users.first_name} ${domain.users.last_name}`
       })) || [];
 
       setDomains(formattedDomains);
