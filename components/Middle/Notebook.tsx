@@ -9,7 +9,7 @@ export default function Notebook() {
         <NotebookText size={17} className="text-[#9f9f9fd9]"/>
         <p className="text-[#9f9f9fd9] text-sm">Notebook</p>
       </div>
-      <FilePlus size={17} className="text-[#9f9f9fd9] opacity-0 group-hover:opacity-100"/>
+      <FilePlus size={17} className="text-[#9f9f9fd9] opacity-0 group-hover:opacity-100 cursor-pointer"/>
     </div>
   );
 }
