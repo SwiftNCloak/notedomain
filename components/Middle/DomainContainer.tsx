@@ -1,5 +1,3 @@
-// components/Middle/DomainContainer.tsx
-
 import React, { useEffect, useState } from 'react';
 import { useUser } from "@clerk/nextjs";
 import supabase from "@/utils/supabase";
@@ -17,11 +15,13 @@ interface Domain {
 }
 
 interface DomainContainerProps {
-  onDomainSelect: (domain: Domain) => void;
+  onDomainSelect: (domain: Domain | null) => void;
+  initialSelectedDomain: Domain | null;
 }
 
-const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect }) => {
+const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect, initialSelectedDomain }) => {
   const [domains, setDomains] = useState<Domain[]>([]);
+  const [activeDomain, setActiveDomain] = useState<string | null>(initialSelectedDomain?.id || null);
   const { user } = useUser();
 
   useEffect(() => {
@@ -29,6 +29,12 @@ const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect }) => 
       fetchUserDomains();
     }
   }, [user]);
+
+  useEffect(() => {
+    if (initialSelectedDomain) {
+      setActiveDomain(initialSelectedDomain.id);
+    }
+  }, [initialSelectedDomain]);
 
   const fetchUserDomains = async () => {
     try {
@@ -79,9 +85,25 @@ const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect }) => 
     setDomains(reorderedDomains);
   };
 
+  const handleNoteDomainLogoClick = () => {
+    const noteDomain = {
+      id: 'note-domain',
+      name: 'NoteDomain: Docs',
+      icon_url: '',
+      created_by: 'SwiftNCloak'
+    };
+    setActiveDomain('note-domain');
+    onDomainSelect(noteDomain);
+  };
+
+  const handleDomainClick = (domain: Domain) => {
+    setActiveDomain(domain.id);
+    onDomainSelect(domain);
+  };
+
   return (
     <div className="w-[70px] max-w-[70px] border-box border-r border-[#2b2b2bd9] bg-[#e8e8e8] dark:bg-[#1f1f1f] flex flex-col px-2 py-2 h-screen overflow-y-scroll overflow-x-hidden scrollbar-hide items-center space-y-2">
-      <NoteDomainLogo />
+      <NoteDomainLogo onClick={handleNoteDomainLogoClick} isActive={activeDomain === 'note-domain'} />
       <hr className="border-2 border-[#2b2b2bd9] rounded-2xl w-1/2" />
       
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -104,7 +126,7 @@ const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect }) => 
                         <DomainIcon
                           name={domain.name}
                           iconUrl={domain.icon_url}
-                          onClick={() => onDomainSelect(domain)}
+                          onClick={() => handleDomainClick(domain)}
                         />
                       </div>
                     )}

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import NextTopLoader from 'nextjs-toploader';
@@ -23,8 +23,20 @@ interface Domain {
 
 function AuthAwareContent({ children }: { children: React.ReactNode }) {
   const { isSignedIn, isLoaded } = useUser();
-
   const [selectedDomain, setSelectedDomain] = useState<Domain | null>(null);
+
+  useEffect(() => {
+    if (isSignedIn) {
+      // Automatically select the NoteDomain when the user is signed in
+      const noteDomain: Domain = {
+        id: 'note-domain',
+        name: 'NoteDomain: Docs',
+        icon_url: '',
+        created_by: 'SwiftNCloak'
+      };
+      setSelectedDomain(noteDomain);
+    }
+  }, [isSignedIn]);
 
   const handleDomainSelect = (domain: Domain) => {
     setSelectedDomain(domain);
@@ -46,7 +58,7 @@ function AuthAwareContent({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex flex-1 overflow-hidden square-background">
-        <DomainContainer onDomainSelect={handleDomainSelect} />
+        <DomainContainer onDomainSelect={handleDomainSelect} initialSelectedDomain={selectedDomain} />
         <NotesContainer selectedDomain={selectedDomain} />
         <main className="flex-1 overflow-auto">
           <NextTopLoader color="#00D166" showSpinner={false} />

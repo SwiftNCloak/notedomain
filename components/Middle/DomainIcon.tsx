@@ -18,7 +18,7 @@ const DomainIcon: React.FC<DomainIconProps> = ({ name, iconUrl, onClick }) => {
 
   return (
     <div 
-      className="w-12 h-12 flex items-center justify-center box-border bg-gray-200 rounded-2xl overflow-hidden border border-[#2b2b2bd9] cursor-pointer"
+      className="w-12 h-12 flex items-center justify-center box-border bg-gray-200 rounded-2xl overflow-hidden border border-[#2b2b2bd9] cursor-pointer hover:border-[#00D166] hover:border-2 transition ease-in-out"
       onClick={onClick}
     >
       {!imageError ? (
