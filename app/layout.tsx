@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import NextTopLoader from 'nextjs-toploader';
@@ -9,10 +10,25 @@ import DomainContainer from "@/components/Middle/DomainContainer";
 import NotesContainer from "@/components/Middle/NotesContainer";
 import ChatContainer from "@/components/Middle/ChatContainer";
 
+import { dark } from "@clerk/themes";
+
 const inter = Inter({ subsets: ["latin"] });
+
+interface Domain {
+  id: string;
+  name: string;
+  icon_url: string;
+  created_by: string;
+}
 
 function AuthAwareContent({ children }: { children: React.ReactNode }) {
   const { isSignedIn, isLoaded } = useUser();
+
+  const [selectedDomain, setSelectedDomain] = useState<Domain | null>(null);
+
+  const handleDomainSelect = (domain: Domain) => {
+    setSelectedDomain(domain);
+  };
 
   if (!isLoaded) {
     return <div className="bg-[#e8e8e8] dark:bg-[#1f1f1f]"></div>;
@@ -30,8 +46,8 @@ function AuthAwareContent({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex flex-1 overflow-hidden square-background">
-        <DomainContainer />
-        <NotesContainer />
+        <DomainContainer onDomainSelect={handleDomainSelect} />
+        <NotesContainer selectedDomain={selectedDomain} />
         <main className="flex-1 overflow-auto">
           <NextTopLoader color="#00D166" showSpinner={false} />
           {children}
@@ -48,7 +64,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        baseTheme: dark,
+      }}
+    >
       <html lang="en" className="h-full">
         <head>
           <title>NoteDomain</title>
