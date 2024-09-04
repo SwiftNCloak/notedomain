@@ -16,12 +16,11 @@ interface Domain {
 
 interface DomainContainerProps {
   onDomainSelect: (domain: Domain | null) => void;
-  initialSelectedDomain: Domain | null;
 }
 
-const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect, initialSelectedDomain }) => {
+const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect }) => {
   const [domains, setDomains] = useState<Domain[]>([]);
-  const [activeDomain, setActiveDomain] = useState<string | null>(initialSelectedDomain?.id || null);
+  const [activeDomain, setActiveDomain] = useState<string | null>(null);
   const { user } = useUser();
 
   useEffect(() => {
@@ -29,12 +28,6 @@ const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect, initi
       fetchUserDomains();
     }
   }, [user]);
-
-  useEffect(() => {
-    if (initialSelectedDomain) {
-      setActiveDomain(initialSelectedDomain.id);
-    }
-  }, [initialSelectedDomain]);
 
   const fetchUserDomains = async () => {
     try {
@@ -90,7 +83,7 @@ const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect, initi
       id: 'note-domain',
       name: 'NoteDomain: Docs',
       icon_url: '',
-      created_by: 'SwiftNCloak'
+      created_by: '@SwiftNCloak'
     };
     setActiveDomain('note-domain');
     onDomainSelect(noteDomain);
