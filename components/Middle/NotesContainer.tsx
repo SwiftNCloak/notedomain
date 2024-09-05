@@ -77,7 +77,7 @@ const NotesContainer: React.FC<NotesContainerProps> = ({ selectedDomain }) => {
         </div>
 
         <div className='items-end justify-end flex'>
-          <CircleChevronDown size={17} className="text-[#9f9f9fd9]"/>
+          <CircleChevronDown size={17} className="text-[#9f9f9fd9] cursor-pointer"/>
         </div>
       </div>
 

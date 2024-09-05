@@ -30,9 +30,9 @@ function AuthAwareContent({ children }: { children: React.ReactNode }) {
       // Automatically select the NoteDomain when the user is signed in
       const noteDomain: Domain = {
         id: 'note-domain',
-        name: 'NoteDomain: Docs',
+        name: 'NoteDomain',
         icon_url: '',
-        created_by: 'SwiftNCloak'
+        created_by: 'Made by SwiftNCloak'
       };
       setSelectedDomain(noteDomain);
     }
