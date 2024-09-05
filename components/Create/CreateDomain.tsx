@@ -1,5 +1,4 @@
 // components/Create/CreateDomain.tsx
-
 import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import supabase from "@/utils/supabase";
@@ -48,10 +47,12 @@ export default function CreateDomain({ onAddDomain }: CreateDomainProps) {
         {
           name,
           icon_url: iconUrl,
-          user_id: userData.id,
+          created_by: userData.id,
           invite_code: inviteCode,
         },
-      ]);
+      ])
+      .select()
+      .single();
 
     if (error) {
       console.error("Error creating domain:", error);

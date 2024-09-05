@@ -1,3 +1,4 @@
+// components/Middle/DomainContainer.tsx
 import React, { useEffect, useState } from 'react';
 import { useUser } from "@clerk/nextjs";
 import supabase from "@/utils/supabase";
@@ -16,11 +17,12 @@ interface Domain {
 
 interface DomainContainerProps {
   onDomainSelect: (domain: Domain | null) => void;
+  initialSelectedDomain: Domain | null;
 }
 
-const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect }) => {
+const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect, initialSelectedDomain }) => {
   const [domains, setDomains] = useState<Domain[]>([]);
-  const [activeDomain, setActiveDomain] = useState<string | null>(null);
+  const [activeDomain, setActiveDomain] = useState<string | null>(initialSelectedDomain?.id || null);
   const { user } = useUser();
 
   useEffect(() => {
@@ -40,22 +42,25 @@ const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect }) => 
       if (userError) throw userError;
 
       const { data: domainsData, error: domainsError } = await supabase
-        .from("domains")
+        .from("domain_members")
         .select(`
-          id,
-          name,
-          icon_url,
-          users (id, username, first_name, last_name)
+          domains (
+            id,
+            name,
+            icon_url,
+            created_by,
+            users (id, username, first_name, last_name)
+          )
         `)
         .eq("user_id", userData.id);
 
       if (domainsError) throw domainsError;
 
       const formattedDomains: Domain[] = domainsData?.map(domain => ({
-        id: domain.id,
-        name: domain.name,
-        icon_url: domain.icon_url,
-        created_by: `${domain.users.first_name} ${domain.users.last_name}`
+        id: domain.domains.id,
+        name: domain.domains.name,
+        icon_url: domain.domains.icon_url,
+        created_by: `${domain.domains.users.first_name} ${domain.domains.users.last_name}`
       })) || [];
 
       setDomains(formattedDomains);
@@ -65,6 +70,10 @@ const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect }) => 
   };
 
   const handleAddDomain = (name: string, iconUrl: string) => {
+    fetchUserDomains();
+  };
+
+  const handleJoinDomain = (domainId: string) => {
     fetchUserDomains();
   };
 
@@ -120,6 +129,7 @@ const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect }) => 
                           name={domain.name}
                           iconUrl={domain.icon_url}
                           onClick={() => handleDomainClick(domain)}
+                          isActive={activeDomain === domain.id}
                         />
                       </div>
                     )}
@@ -128,7 +138,7 @@ const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect }) => 
               ) : (
                 <div className="space-y-2">
                   <CreateDomain onAddDomain={handleAddDomain} />
-                  <JoinDomain />
+                  <JoinDomain onJoinDomain={handleJoinDomain} />
                 </div>
               )}
               {provided.placeholder}
@@ -141,7 +151,7 @@ const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect }) => 
         <>
           <hr className="border-2 border-[#2b2b2bd9] rounded-2xl w-1/2" />
           <CreateDomain onAddDomain={handleAddDomain} />
-          <JoinDomain />
+          <JoinDomain onJoinDomain={handleJoinDomain} />
         </>
       )}
     </div>

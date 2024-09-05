@@ -6,9 +6,10 @@ interface DomainIconProps {
   name: string;
   iconUrl: string;
   onClick: () => void;
+  isActive: boolean;
 }
 
-const DomainIcon: React.FC<DomainIconProps> = ({ name, iconUrl, onClick }) => {
+const DomainIcon: React.FC<DomainIconProps> = ({ name, iconUrl, onClick, isActive }) => {
   const [imageError, setImageError] = useState(false);
 
   const handleImageError = () => {
@@ -18,7 +19,9 @@ const DomainIcon: React.FC<DomainIconProps> = ({ name, iconUrl, onClick }) => {
 
   return (
     <div 
-      className="w-12 h-12 flex items-center justify-center box-border bg-gray-200 rounded-2xl overflow-hidden border border-[#2b2b2bd9] cursor-pointer hover:border-[#00D166] hover:border-2 transition ease-in-out"
+      className={`w-12 h-12 flex items-center justify-center box-border bg-gray-200 rounded-2xl overflow-hidden cursor-pointer transition ease-in-out ${
+        isActive ? 'border-2 border-[#00D166]' : 'border border-[#2b2b2bd9] hover:border-[#00D166] hover:border-2'
+      }`}
       onClick={onClick}
     >
       {!imageError ? (
