@@ -7,6 +7,7 @@ import DomainIcon from "./DomainIcon";
 import JoinDomain from "../Join/JoinDomain";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import NoteDomainLogo from "./NoteDomainLogo";
+import ND1Button from '../ND1/ND1Button';
 
 interface Domain {
   id: string;
@@ -106,6 +107,7 @@ const DomainContainer: React.FC<DomainContainerProps> = ({ onDomainSelect, initi
   return (
     <div className="w-[70px] max-w-[70px] border-box border-r border-[#2b2b2bd9] bg-[#e8e8e8] dark:bg-[#1f1f1f] flex flex-col px-2 py-2 h-screen overflow-y-scroll overflow-x-hidden scrollbar-hide items-center space-y-2">
       <NoteDomainLogo onClick={handleNoteDomainLogoClick} isActive={activeDomain === 'note-domain'} />
+      <ND1Button />
       <hr className="border-2 border-[#2b2b2bd9] rounded-2xl w-1/2" />
       
       <DragDropContext onDragEnd={handleDragEnd}>
